@@ -1,0 +1,16 @@
+# Development dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Include base requirements
+-r requirements.txt
+
+# Testing
+pytest>=6.0
+
+# Code formatting and linting (optional)
+black>=22.0
+mypy>=0.900
+
+# Additional development tools (optional)
+flake8>=4.0.0
+isort>=5.0.0

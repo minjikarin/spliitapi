@@ -1,9 +1,6 @@
-#!/usr/bin/env python3
-import requests
-from dataclasses import dataclass
-from typing import List, Tuple
-import json
-from datetime import datetime, UTC
+from .client import Spliit
+from .utils import get_current_timestamp, format_expense_payload
+
 CATEGORIES = {
     "Uncategorized": {
         "General": 0,
@@ -64,87 +61,4 @@ CATEGORIES = {
     }
 }
 
-def get_current_timestamp():
-    # format '2024-11-14T22:26:58.244Z'
-    now = datetime.now(UTC)
-    return now.strftime('%Y-%m-%dT%H:%M:%S.') + f"{now.microsecond // 10000:03d}Z"
-
-@dataclass
-class Spliit():
-    group_id: str
-    
-    def get_group(self):
-        params_input = {"0":{"json":{"groupId": self.group_id }},"1":{"json":{"groupId": self.group_id}}}
-        params = {
-            'batch': '1',
-            "input": json.dumps(params_input)
-        }
-
-        response = requests.get('https://spliit.app/api/trpc/groups.get,groups.getDetails', params=params)
-        return response.json()[0]['result']['data']['json']['group']
-
-    def get_username_id(self, name: str):
-        group = self.get_group()
-        for participant in group["participants"]:
-            if name == participant["name"]:
-                return participant["id"]
-        return None
-
-    def get_participants(self):
-        return_value = {}
-        group = self.get_group()
-        for participant in group["participants"]:
-            return_value[participant["name"]] = participant["id"]
-        return return_value
-
-    def add_expense(self, title, paid_by: str, paid_for: List[Tuple[str,int]], amount: int = 1300, category = 0):
-        # paid for is a list of participant ID and how much share
-        params = {
-            'batch': '1',
-        }
-        paid_for_format = []
-        for participant in paid_for:
-            paticipant_id = participant[0]
-            paticipant_shares = participant[1]
-            paid_for_format.append({"participant": paticipant_id, "shares": paticipant_shares})
-            json_data = {
-            '0': {
-                'json': {
-                    'groupId': self.group_id,
-                    'expenseFormValues': {
-                        'expenseDate': get_current_timestamp(),
-                        'title': title,
-                        'category': category,
-                        'amount': amount,
-                        'paidBy': paid_by,
-                        'paidFor': paid_for_format,
-                        'splitMode': 'EVENLY',
-                        'saveDefaultSplittingOptions': False,
-                        'isReimbursement': False,
-                        'documents': [],
-                        'notes': '',
-                    },
-                    'participantId': 'None',
-                },
-                'meta': {
-                    'values': {
-                        'expenseFormValues.expenseDate': [
-                            'Date',
-                        ],
-                    },
-                },
-            },
-        }
-
-        response = requests.post('https://spliit.app/api/trpc/groups.expenses.create', params=params, json=json_data)
-        return response.content.decode()
-
-
-
-if __name__ == "__main__":
-    a = Spliit(group_id = "3w4pzrjzIyu3xipruh_XR")
-    # print(a.get_group())
-    b = a.get_group()
-    john = a.get_participants()["John"]
-    print(a.add_expense("test exp", john, [(john, 100)], 1200))
-
+__all__ = ["Spliit", "CATEGORIES", "get_current_timestamp", "format_expense_payload"]
