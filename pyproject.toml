@@ -5,7 +5,8 @@ build-backend = "hatchling.build"
 [project]
 name = "spliit"
 version = "0.1.0"
-description = "A Python client for the Spliit API"
+description = "A Python SDK for interacting with the Spliit API. Spliit is an open-source expense sharing application that helps you split bills and track shared expenses."
+readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
     "requests>=2.25.0",
@@ -16,4 +17,10 @@ dev = [
     "pytest>=6.0",
     "black>=22.0",
     "mypy>=0.900",
+    "flake8>=4.0.0",
+    "isort>=5.0.0",
+]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=4.0.0",
 ]

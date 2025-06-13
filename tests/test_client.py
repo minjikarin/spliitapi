@@ -250,12 +250,12 @@ def test_update_expense(mock_requests):
                         "id": "exp1",
                         "title": "Old Title",
                         "amount": 1000,
-                        "paidBy": "user1",
-                        "category": 8,
+                        "paidBy": {"id": "user1", "name": "User 1"},
+                        "categoryId": 8,
                         "expenseDate": "2024-01-01T12:00:00.000Z",
                         "splitMode": "EVENLY",
                         "isReimbursement": False,
-                        "paidFor": [{"participant": "user1", "shares": 100}],
+                        "paidFor": [{"participantId": "user1", "shares": 100, "expenseId": "exp1"}],
                         "notes": ""
                     }
                 }

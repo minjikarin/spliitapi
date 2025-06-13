@@ -43,11 +43,8 @@ This installs the package locally and creates symlinks so any code changes are i
 ### 4. Install Development Dependencies
 
 ```bash
-# Install core dependencies only
-pip install -r requirements.txt
-
-# OR install development dependencies (includes testing tools)
-pip install -r requirements-dev.txt
+# Install with all development dependencies
+pip install -e .[dev,test]
 ```
 
 ## Testing Your Local Installation
@@ -58,8 +55,7 @@ pip install -r requirements-dev.txt
 # Test in Python REPL
 python3
 >>> from spliit import Spliit, CATEGORIES
->>> print("SDK imported successfully!")
->>> print(f"Available categories: {len(CATEGORIES)}")
+>>> print("SDK imported successfully!")]
 ```
 
 ### 2. Run Unit Tests
@@ -114,8 +110,8 @@ spliitapi/
 │   └── test_client.py       # Test cases
 ├── README.md                # Documentation
 ├── CONTRIBUTING.md          # This file
-├── pyproject.toml           # Package configuration
-└── LICENSE                  # License file
+└── pyproject.toml           # Package configuration
+
 ```
 
 
@@ -124,6 +120,3 @@ spliitapi/
 1. Go to [Spliit.app](https://spliit.app)
 2. Open your group
 3. Copy the group ID from the URL: `https://spliit.app/groups/YOUR_GROUP_ID_HERE`
-
-
-Happy coding! 🚀
